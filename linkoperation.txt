@@ -1,0 +1,51 @@
+	public boolean linkOperation(String Campaignslabel, String linklabel) {
+
+		int row;
+
+		row = getRowIndex(linklabel); 
+
+		switch (linklabel){ 
+		case "Edit":
+
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(1) > a")).click();
+			if(driver.getCurrentUrl().contains("whiteboard"))
+				return true;
+			else
+				return false;			
+
+		case "Copy":			
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(2) > a")).click();
+			DriverUtility.waitforElementDisplay(driver, popUpModal, 5);
+
+			Long number = System.currentTimeMillis();
+			String newCampaignName = "test"+number;
+			copyCampaignTxtBoxPopupWindow.sendKeys(newCampaignName);
+			copyCampaignOkBtnPopupWindow.click();					
+			//loadCampaignManagementPage();			
+			return searchCampaigns(newCampaignName);
+
+		case "Rename":
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(3) > a")).click();
+			return true;
+
+		case "Create Campaign":
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(4) > a")).click();
+			return true;
+
+		case "Save as Template" :
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(5) > a")).click();
+			DriverUtility.waitforElementDisplay(driver, popUpModal, 5000);			
+			String templateName = "test"+System.currentTimeMillis();
+			saveTemplateTxtBoxPopupWindow.sendKeys(templateName);
+			saveTemplateOkBtnPopupWindow.click();						
+			return true;
+
+		case "Report":
+			driver.findElement(By.cssSelector("table tr:nth-of-type("+ row +") > td> ul > li:nth-of-type(6) > a")).click();
+			return true;
+
+		default:
+			return false;
+
+		}
+	}
